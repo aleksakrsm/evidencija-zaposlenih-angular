@@ -7,6 +7,8 @@ import { EmployeesComponent } from './pages/employees/employees.component';
 import { LogoutComponent } from './login-register-logout/logout/logout.component';
 import { SubjectsComponent } from './pages/subjects/subjects.component';
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
+import { ProvideEmailAdressComponent } from './login-register-logout/provide-email-adress/provide-email-adress.component';
+import { CheckRegistrationLinkComponent } from './login-register-logout/check-registration-link/check-registration-link.component';
 
 export const routes: Routes = [
   {
@@ -14,6 +16,8 @@ export const routes: Routes = [
     children:[
       { path: '', title: 'Login or Register', component: LoginOrRegisterComponent },
       { path: 'login', title: 'Login', component: LoginComponent },
+      { path: 'provideEmail', title: 'ProvideEmail', component: ProvideEmailAdressComponent },
+      { path: 'registrationCheck', title: 'RegistrationCheck', component: CheckRegistrationLinkComponent },
       { path: 'register', title: 'Register', component: RegisterComponent },
     ]
   },

@@ -10,7 +10,7 @@ import { RouterLink } from '@angular/router';
     <div>
       <a routerLink="/account/login"><input type="button" value="Login" /></a>
       <br />
-      <a routerLink="/account/register"><input type="button" value="Register" /></a>
+      <a routerLink="/account/provideEmail"><input type="button" value="Register" /></a>
     </div>
   `,
   styleUrl: './login-or-register.component.scss',

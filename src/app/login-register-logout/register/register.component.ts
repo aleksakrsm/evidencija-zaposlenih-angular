@@ -54,22 +54,6 @@ import { catchError } from 'rxjs';
     </div>
     <br>
     <div>
-      <label for="email">Email: </label>
-      <input
-        type="text"
-        name="email"
-        id="email"
-        formControlName="email"
-      />
-    </div>
-    <div *ngIf="registrationGroup.get('email')?.errors?.['required']">
-    email is required.
-    </div>
-    <div *ngIf="registrationGroup.get('email')?.errors?.['email']">
-    email is not valid.
-    </div>
-    <br>
-    <div>
       <label for="password">Password: </label>
       <input
         type="password"
@@ -111,7 +95,6 @@ export class RegisterComponent {
     firstname:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
     lastname:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
     username:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
-    email:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required,Validators.email] }),
     password:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
     confirmPassword:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
   },{validators:[confirmedPassword()]});
@@ -120,7 +103,7 @@ export class RegisterComponent {
     let firstname = this.registrationGroup.get("firstname")?.getRawValue();
     let lastname = this.registrationGroup.get("lastname")?.getRawValue();
     let username = this.registrationGroup.get("username")?.getRawValue();
-    let email = this.registrationGroup.get("email")?.getRawValue();
+    let email = this.usersService.regMail;
     let password = this.registrationGroup.get("password")?.getRawValue();
     let user : RegistratingUser = {
       firstname: firstname,
