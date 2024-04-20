@@ -4,7 +4,7 @@ import { EducationTitle } from "./educationTitle.domain";
 import { Status } from "./status.enum";
 
 export type Employee = {
-  id: number;
+  id?: number;
   firstname: string;
   lastname: string;
   birthday:Date;

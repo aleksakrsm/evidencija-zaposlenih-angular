@@ -22,6 +22,7 @@ import { RouterLink } from '@angular/router';
             <td>Education Title</td>
             <td>Department</td>
             <td>Status</td>
+            <td>Birthday</td>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +34,7 @@ import { RouterLink } from '@angular/router';
             <td>{{ e.educationTitle.name }}</td>
             <td>{{ e.department.shortName }}</td>
             <td>{{ e.status }}</td>
+            <td>{{ e.birthday }}</td>
           </tr>
         </tbody>
       </table>

@@ -15,6 +15,7 @@ import { EmployeeFilter } from '../../domain/employeeFilter';
 import { Status } from '../../domain/status.enum';
 import { Employee } from '../../domain/employee.domain';
 import { AsyncPipe, JsonPipe } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-employees',
@@ -25,9 +26,19 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
     EmployeeFilterComponent,
     AsyncPipe,
     JsonPipe,
+    RouterLink,
+    RouterLinkActive
   ],
   template: `
     <!-- <p>employees works!</p> -->
+    <app-employee-filter
+    [academicTitles]="academicTitles"
+    [departments]="departments"
+    [educationTitles]="educationTitles"
+    (filterChanged)="filterChanged($event)"
+    ></app-employee-filter>
+    <br>
+    <br>
     <app-employee-page
       [currentPage]="page"
       [totalPages]="totalPages"
@@ -37,17 +48,7 @@ import { AsyncPipe, JsonPipe } from '@angular/common';
     ></app-employee-page>
     <br>
     <br>
-    <br>
-    <app-employee-filter
-    [academicTitles]="academicTitles"
-    [departments]="departments"
-    [educationTitles]="educationTitles"
-    (filterChanged)="filterChanged($event)"
-    ></app-employee-filter>
-    <br>
-    <br>
-    <button type="button">Add New Employee</button>
-    <!-- {{employeeFilter | json}} -->
+    <a routerLink="../employees/add" routerLinkActive="active" >Add New Employee</a>
   `,
   styleUrl: './employees.component.scss',
 })
@@ -140,4 +141,5 @@ export class EmployeesComponent implements OnInit {
         this.totalPages = x.totalPages;
       });
   }
+
 }

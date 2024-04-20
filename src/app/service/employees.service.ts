@@ -30,4 +30,33 @@ export class EmployeesService{
       const headers = {'Authorization':`Bearer ${jwt}`};
       return this.http.get<Employee>(url,{headers});
     }
+    searchEmployee(searchTerm:string,jwt:string): Observable<Employee[]> {
+      console.log(searchTerm);
+      const url = `${EMPLOYEES_API_URL}/search/${searchTerm}`;
+      const headers = {'Authorization':`Bearer ${jwt}`};
+      return this.http.get<Employee[]>(url,{headers});
+    }
+    
+    saveEmployee(employee:Employee,jwt:string):Observable<Employee> {
+      const url = `${EMPLOYEES_API_URL}/save`;
+      const at = `{"id":${employee.academicTitle.id},"name":"${employee.academicTitle.name}"}`;
+      const et = `{"id":${employee.educationTitle.id},"name":"${employee.educationTitle.name}"}`;
+      const dep = `{"id":${employee.department.id},"name":"${employee.department.name}","shortName":"${employee.department.shortName}"}`;
+      const birthday = `[${employee.birthday.getFullYear()},${employee.birthday.getMonth()+1},${employee.birthday.getDate()}]`;
+      const body = `{"firstname":"${employee.firstname}","lastname":"${employee.lastname}","birthday":${birthday},"academicTitle":${at},"educationTitle":${et},"department":${dep},"status":"${employee.status}"}`;
+      const headers = {'Authorization':`Bearer ${jwt}`,'Content-Type': 'application/json'};
+      console.log(body);
+      return this.http.post<Employee>(url,body,{headers});
+    }
+    updateEmployee(employee:Employee,jwt:string):Observable<Employee> {
+      const url = `${EMPLOYEES_API_URL}/update`;
+      const at = `{"id":${employee.academicTitle.id},"name":"${employee.academicTitle.name}"}`;
+      const et = `{"id":${employee.educationTitle.id},"name":"${employee.educationTitle.name}"}`;
+      const dep = `{"id":${employee.department.id},"name":"${employee.department.name}","shortName":"${employee.department.shortName}"}`;
+      const birthday = `[${employee.birthday.getFullYear()},${employee.birthday.getMonth()+1},${employee.birthday.getDate()}]`;
+      const body = `{"id":${employee.id},"firstname":"${employee.firstname}","lastname":"${employee.lastname}","birthday":${birthday},"academicTitle":${at},"educationTitle":${et},"department":${dep},"status":"${employee.status}"}`;
+      const headers = {'Authorization':`Bearer ${jwt}`,'Content-Type': 'application/json'};
+      console.log(body);
+      return this.http.put<Employee>(url,body,{headers});
+    }
 }

@@ -1,0 +1,6 @@
+export enum StudiesType {
+    UNDERGRADUATE='UNDERGRADUATE',
+    MASTER='MASTER',
+    PhD='PhD',
+    SPECIALIZED='SPECIALIZED'
+  }

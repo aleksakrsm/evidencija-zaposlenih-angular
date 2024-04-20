@@ -1,6 +1,6 @@
 
 export type Department  ={
-    id:number;
+    id?:number;
     name:string;
     shortName:string;
 }

@@ -1,0 +1,65 @@
+<h3>Basic info:</h3>
+<form [formGroup]="employeeForm">
+  <label for="status">Status: </label>
+  <input
+    type="text"
+    name="status"
+    id="status"
+    formControlName="status"
+    readonly
+  />
+  <br />
+  <label for="firstname">Firstname: </label>
+  <input
+    type="text"
+    name="firstname"
+    id="firstname"
+    formControlName="firstname"
+  />
+  <br />
+  <label for="lastname">Lastname: </label>
+  <input type="text" name="lastname" id="lastname" formControlName="lastname" />
+  <br />
+  <label for="birthday">Birthday: </label>
+  <input
+    type="text"
+    placeholder="DD.MM.YYYY"
+    (blur)="onBirthdayBlur()"
+    (focus)="onBirthdayFocus()"
+    name="birthday"
+    id="birthday"
+    formControlName="birthday"
+/>
+  <br />
+  <label for="cmbAT">Izaberi akademsku titulu</label>
+  <select formControlName="academicTitle" id="cmbAT">
+    <option *ngFor="let option of academicTitles" [value]="option.name">
+      {{ option.name }}
+    </option>
+  </select>
+  <div *ngIf="employeeForm?.get('academicTitle')?.errors?.['not selected']">
+    u must select
+  </div>
+  <br />
+  <label for="cmbET">Izaberi edukacionu titulu</label>
+  <select formControlName="educationTitle" id="cmbET">
+    <option *ngFor="let option of educationTitles" [value]="option.name">
+      {{ option.name }}
+    </option>
+  </select>
+  <div *ngIf="employeeForm?.get('educationTitle')?.errors?.['not selected']">
+    u must select
+  </div>
+  <br />
+  <label for="cmbDEP">Izaberi department</label>
+  <select formControlName="department" id="cmbDEP">
+    <option *ngFor="let option of departments" [value]="option.shortName">
+      {{ option.shortName }}
+    </option>
+  </select>
+  <div *ngIf="employeeForm?.get('department')?.errors?.['not selected']">
+    u must select
+  </div>
+  <br />
+</form>
+<button [disabled]="!employeeForm.valid" (click)="saveEmployee()">Save</button>

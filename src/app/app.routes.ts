@@ -9,6 +9,12 @@ import { SubjectsComponent } from './pages/subjects/subjects.component';
 import { EditEmployeeComponent } from './pages/edit-employee/edit-employee.component';
 import { ProvideEmailAdressComponent } from './login-register-logout/provide-email-adress/provide-email-adress.component';
 import { CheckRegistrationLinkComponent } from './login-register-logout/check-registration-link/check-registration-link.component';
+import { AddEmployeeComponent } from './pages/add-employee/add-employee.component';
+import { AddSubjectComponent } from './pages/add-subject/add-subject.component';
+import { EditSubjectComponent } from './pages/edit-subject/edit-subject.component';
+import { DepartmentsComponent } from './pages/departments/departments.component';
+import { EditDepartmentComponent } from './pages/edit-department/edit-department.component';
+import { AddDepartmentComponent } from './pages/add-department/add-department.component';
 
 export const routes: Routes = [
   {
@@ -26,9 +32,15 @@ export const routes: Routes = [
     component:HomeComponent,
     children:[
       // {path:"",title: 'Home',component:HomeComponent},
-      {path:"employees/:id",title: 'Employees',component:EditEmployeeComponent},
+      {path:"employees/add",title: 'Add Employee',component:AddEmployeeComponent},
+      {path:"employees/:id",title: 'Employee',component:EditEmployeeComponent},
       {path:"employees",title: 'Employees',component:EmployeesComponent},
-      {path:"subjects",title: 'Subjects',component:SubjectsComponent}
+      {path:"subjects/add",title: 'AddSubject',component:AddSubjectComponent},
+      {path:"subjects/:id",title: 'Subject',component:EditSubjectComponent},
+      {path:"subjects",title: 'Subjects',component:SubjectsComponent},
+      {path:"departments/add",title: 'AddDepartment',component:AddDepartmentComponent},
+      {path:"departments/:id",title: 'Department',component:EditDepartmentComponent},
+      {path:"departments",title: 'Departments',component:DepartmentsComponent}
     ]
   },
   { path: 'logout', component: LogoutComponent },

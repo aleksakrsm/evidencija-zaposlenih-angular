@@ -16,3 +16,19 @@ export function confirmedPassword() : ValidatorFn{
         return {"password not confirmed":"password and confirm password do not match"};
     };
 }
+export function validCmbSelection() : ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+        console.log("1");
+        if(!control.touched && !control.dirty) return null;
+        console.log("2");
+        return (control.getRawValue() !== "-- Select --")? null: {"not selected":"u must select value"};
+    };
+}
+export function validCmbSelectionInitial() : ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+        console.log("1");
+        // if(!control.touched && !control.dirty) return null;
+        console.log("2");
+        return (control.getRawValue() !== "-- Select --")? null: {"required fields must not remain empty":"u must select value"};
+    };
+}

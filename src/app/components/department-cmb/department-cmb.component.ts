@@ -36,8 +36,8 @@ export class DepartmentCmbComponent implements OnInit{
     .get('selectedOption')!
     .valueChanges.pipe(switchMap((title) => of(this.findId(title))));
 
-  private findId(title: string | null): number | null {
-    if (title == null) return null;
+  private findId(title: string | null): number | undefined {
+    if (title == null) return undefined;
     let at = this.departments.find((x) => x.shortName === title);
     return at!.id;
   }

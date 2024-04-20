@@ -13,6 +13,7 @@ import { Status } from '../../domain/status.enum';
     selector: 'app-employee-filter',
     standalone: true,
     template: `
+    <br>
   <app-academic-title-cmb [academicTitles] = "academicTitles" (selected)="notifyAT($event)"></app-academic-title-cmb>
   <!-- <app-academic-title-cmb [academicTitles] = "academicTitles" (selected)="print($event)"></app-academic-title-cmb> -->
   <br>
@@ -51,8 +52,8 @@ notifyET($event: number | null) {
   }
   this.filterChanged.emit(this.employeeFilter);
 }
-notifyDepartment($event: number | null) {
-  if($event==null){
+notifyDepartment($event: number | undefined) {
+  if($event==undefined){
     this.employeeFilter.departmentId = -1;
   }else{
     this.employeeFilter.departmentId = $event;

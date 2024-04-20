@@ -17,5 +17,24 @@ export class DepartmentsService{
         const headers = { 'Content-Type': 'application/json','Authorization':'Bearer '+jwt};
       return this.http.get<Department[]>(url,{headers});
     }
+    getDepartment(id:number,jwt:string): Observable<Department> {
+      const url = `${DEPARTMENTS_API_URL}/get/${id}`;
+      const headers = {'Authorization':`Bearer ${jwt}`};
+      return this.http.get<Department>(url,{headers});
+    }
+    
+    saveDepartment(department:Department,jwt:string):Observable<Department> {
+      const url = `${DEPARTMENTS_API_URL}/save`;
+      const body = `{"name":"${department.name}","shortName":"${department.shortName}"}`;
+      const headers = {'Authorization':`Bearer ${jwt}`,'Content-Type': 'application/json'};
+      return this.http.post<Department>(url,body,{headers});
+    }
+    updateDepartment(department:Department,jwt:string):Observable<Department> {
+      const url = `${DEPARTMENTS_API_URL}/update`;
+      const body = `{"id":${department.id},"name":"${department.name}","shortName":"${department.shortName}"}`;
+      const headers = {'Authorization':`Bearer ${jwt}`,'Content-Type': 'application/json'};
+      // console.log(body);
+      return this.http.put<Department>(url,body,{headers});
+    }
 
 }
