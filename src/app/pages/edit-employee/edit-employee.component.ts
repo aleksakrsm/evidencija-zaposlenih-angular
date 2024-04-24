@@ -60,7 +60,7 @@ export class EditEmployeeComponent implements OnInit {
   departments: Department[] = [];
   constructor(
     private employeesService: EmployeesService,
-    private usersService: UsersService,
+    // private usersService: UsersService,
     private location: Location,
     private academicTitlesService: AcademicTitlesService,
     private historyService: AcademicTitleHistoryService,
@@ -73,24 +73,24 @@ export class EditEmployeeComponent implements OnInit {
       this.id = +params['id'];
     });
     this.employeesService
-      .getEmployee(this.id, this.usersService.userToken.token)
+      .getEmployee(this.id)
       .subscribe((x) => (this.employee = x));
     this.academicTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {
         this.academicTitles = x;
         this.academicTitles.unshift({ id: -1, name: '-- Select --' });
       });
 
     this.educationTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {
         this.educationTitles = x;
         this.educationTitles.unshift({ id: -1, name: '-- Select --' });
       });
 
     this.departmentsService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {
         this.departments = x;
         this.departments.unshift({
@@ -104,7 +104,7 @@ export class EditEmployeeComponent implements OnInit {
     // ovo izmeniti jer vraca novi emp umesto da update stari
     $event.id = this.id;
     this.employeesService
-      .updateEmployee($event, this.usersService.userToken.token)
+      .updateEmployee($event)
       .pipe()
       .subscribe((x) => {
         console.log('============ID:=============');
@@ -116,7 +116,7 @@ export class EditEmployeeComponent implements OnInit {
     // this.historyService.saveEmployeeAcademicTitleHistory(history,this.usersService.userToken.token).subscribe();
     if($event.toSave.length==0&&$event.toDelete.length==0)
       return;
-    this.historyService.saveEmployeeAcademicTitleHistory($event.toSave,$event.toDelete,this.usersService.userToken.token).subscribe(
+    this.historyService.saveEmployeeAcademicTitleHistory($event.toSave,$event.toDelete).subscribe(
       x=>{ });
   }
 }

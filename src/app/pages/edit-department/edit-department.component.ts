@@ -27,7 +27,7 @@ export class EditDepartmentComponent {
   
   constructor(
     private departmentsService: DepartmentsService,
-    private usersService: UsersService,
+    // private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
     private location:Location
   ) {}
@@ -36,14 +36,14 @@ export class EditDepartmentComponent {
       this.id = +params['id'];
     });
     this.departmentsService
-      .getDepartment(this.id, this.usersService.userToken.token)
+      .getDepartment(this.id)
       .subscribe((x) => (this.department = x));
   }
   updateDepartment($event: Department) {
     // ovo izmeniti jer vraca novi emp umesto da update stari
     $event.id = this.id;
     this.departmentsService
-      .updateDepartment($event, this.usersService.userToken.token)
+      .updateDepartment($event)
       .pipe()
       .subscribe((x) => {
         console.log('============ID:====updated=========');

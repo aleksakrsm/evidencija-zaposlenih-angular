@@ -25,7 +25,7 @@ export class AddSubjectComponent implements OnInit{
     ngOnInit(): void {}
 
     saveSubject($event: Subject) {
-      this.subjectsService.saveSubject($event,this.usersService.userToken.token).pipe().subscribe(x=>{
+      this.subjectsService.saveSubject($event).pipe().subscribe(x=>{
         console.log("============ID:=============");
         console.log(x.id);
         this.location.back();

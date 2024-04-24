@@ -15,6 +15,7 @@ import { EditSubjectComponent } from './pages/edit-subject/edit-subject.componen
 import { DepartmentsComponent } from './pages/departments/departments.component';
 import { EditDepartmentComponent } from './pages/edit-department/edit-department.component';
 import { AddDepartmentComponent } from './pages/add-department/add-department.component';
+import { canActivateTokenGuard } from './guards/auth-guard.service';
 
 export const routes: Routes = [
   {
@@ -41,7 +42,8 @@ export const routes: Routes = [
       {path:"departments/add",title: 'AddDepartment',component:AddDepartmentComponent},
       {path:"departments/:id",title: 'Department',component:EditDepartmentComponent},
       {path:"departments",title: 'Departments',component:DepartmentsComponent}
-    ]
+    ],
+    canActivate:[canActivateTokenGuard]
   },
   { path: 'logout', component: LogoutComponent },
   { path: '', redirectTo: '/account', pathMatch: 'full' },

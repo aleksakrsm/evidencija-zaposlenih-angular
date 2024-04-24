@@ -65,8 +65,7 @@ export class AddEmployeePopup {
       distinctUntilChanged(),
       switchMap((term) =>
         this.employeeService.searchEmployee(
-          term,
-          this.usersService.userToken.token
+          term
         )
       )
     );

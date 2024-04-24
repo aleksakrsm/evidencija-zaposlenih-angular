@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { AuthenticatingUser } from '../../domain/user.domain';
 import { Router } from '@angular/router';
 import { catchError } from 'rxjs';
+import { LocalStorageService } from '../../service/localStorage.service';
 
 @Component({
   selector: 'app-login',
@@ -51,7 +52,7 @@ import { catchError } from 'rxjs';
 export class LoginComponent {
   private usersService: UsersService = inject(UsersService);
   private router: Router = inject(Router);
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(private formBuilder: FormBuilder,private localStorageService:LocalStorageService) {}
   loginGroup = this.formBuilder.group({
     username: ['', { nonNullable: true, validators: [Validators.required] }],
     password: ['', { nonNullable: true, validators: [Validators.required] }],
@@ -70,7 +71,7 @@ export class LoginComponent {
       )
       .subscribe({
         next: (x) => {
-          this.usersService.userToken.token = x.token;
+          this.localStorageService.set("userToken",x.token);
           this.router.navigate(['/home']);
         },
         error: (err) => {

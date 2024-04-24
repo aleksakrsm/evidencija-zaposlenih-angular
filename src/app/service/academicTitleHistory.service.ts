@@ -13,19 +13,21 @@ const EMPLOYEE_ACADEMIC_TITLES_API_URL = 'http://localhost:8080/webapp/historyIt
 export class AcademicTitleHistoryService{
     private http = inject(HttpClient);
     
-    public getEmployeeAcademicTitleHistory(employeeId:number,jwt:string):Observable<EmployeeAcademicTitle[]>{
+    public getEmployeeAcademicTitleHistory(employeeId:number):Observable<EmployeeAcademicTitle[]>{
       const url = EMPLOYEE_ACADEMIC_TITLES_API_URL+`/get/employee/${employeeId}`;
-      const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
-      return this.http.get<EmployeeAcademicTitle[]>(url,{headers});
+      // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
+      // return this.http.get<EmployeeAcademicTitle[]>(url,{headers});
+      return this.http.get<EmployeeAcademicTitle[]>(url);
     }
-    public saveEmployeeAcademicTitleHistory(toSave:EmployeeAcademicTitle[],toDelete:EmployeeAcademicTitle[],jwt:string):Observable<EmployeeAcademicTitle[]>{
+    public saveEmployeeAcademicTitleHistory(toSave:EmployeeAcademicTitle[],toDelete:EmployeeAcademicTitle[]):Observable<EmployeeAcademicTitle[]>{
       const url = EMPLOYEE_ACADEMIC_TITLES_API_URL+`/saveChanges`;//ovo promeniti
-      const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
       const body =JSON.stringify({toSave:toSave,toDelete:toDelete}, null, 2);
+      // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
       // const body =`"toSave":${JSON.stringify(toSave)},"toDelete":${JSON.stringify(toDelete)}`;
-      console.log(body);
+      // console.log(body);
       // console.log(history.length)
-      return this.http.post<EmployeeAcademicTitle[]>(url,body,{headers});
+      // return this.http.post<EmployeeAcademicTitle[]>(url,body,{headers});
+      return this.http.post<EmployeeAcademicTitle[]>(url,body);
     }
 
 

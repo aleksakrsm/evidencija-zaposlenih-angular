@@ -12,12 +12,11 @@ const ACADEMIC_TITLES_API_URL = 'http://localhost:8080/webapp/academicTitle';
 export class AcademicTitlesService{
     private http = inject(HttpClient);
     
-    public getAll(jwt:string):Observable<AcademicTitle[]>{
+    public getAll():Observable<AcademicTitle[]>{
       const url = ACADEMIC_TITLES_API_URL+"/getAll";
-        const token:string = "Bearer "+jwt;
-        const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
-        console.log(headers);
-      return this.http.get<AcademicTitle[]>(url,{headers});
+        // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
+        // console.log(headers);
+      return this.http.get<AcademicTitle[]>(url);
     }
 
 }

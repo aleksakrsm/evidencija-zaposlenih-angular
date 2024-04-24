@@ -29,32 +29,32 @@ export class AddEmployeeComponent implements OnInit{
     private academicTitlesService: AcademicTitlesService,
     private educationTitlesService: EducationTitlesService,
     private departmentsService: DepartmentsService,
-    private usersService: UsersService
+    // private usersService: UsersService
     ) {}
     ngOnInit(): void {
       
       this.academicTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {
         this.academicTitles = x;
         this.academicTitles.unshift({ id:-1, name: '-- Select --' });
       });
 
     this.educationTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {(this.educationTitles = x);
         this.educationTitles.unshift({ id:-1, name: '-- Select --' });
       });
 
     this.departmentsService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {this.departments = x;
         this.departments.unshift({ id:-1, name: '-- Select --' , shortName: '-- Select --' });
       });
 
     }
     saveEmployee($event: Employee) {
-      this.employeesService.saveEmployee($event,this.usersService.userToken.token).pipe().subscribe(x=>{
+      this.employeesService.saveEmployee($event).pipe().subscribe(x=>{
         console.log("============ID:=============");
         console.log(x.id);
         this.location.back();

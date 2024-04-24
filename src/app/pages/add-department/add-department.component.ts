@@ -23,7 +23,7 @@ export class AddDepartmentComponent implements OnInit{
     ngOnInit(): void {}
 
     saveDepartment($event: Department) {
-      this.departmentsService.saveDepartment($event,this.usersService.userToken.token).pipe().subscribe(x=>{
+      this.departmentsService.saveDepartment($event).pipe().subscribe(x=>{
         console.log("============ID:=============");
         console.log(x.id);
         this.location.back();

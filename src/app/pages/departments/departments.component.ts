@@ -46,7 +46,7 @@ export class DepartmentsComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.departmentsService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {
         this.departments = x;
       });

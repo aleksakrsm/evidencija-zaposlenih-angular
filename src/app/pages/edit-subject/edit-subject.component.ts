@@ -32,7 +32,7 @@ export class EditSubjectComponent {
   
   constructor(
     private subjectsService: SubjectsService,
-    private usersService: UsersService,
+    // private usersService: UsersService,
     private activatedRoute: ActivatedRoute,
     private subjectEmployeesService:EmployeeSubjectService
   ) {}
@@ -41,14 +41,14 @@ export class EditSubjectComponent {
       this.id = +params['id'];
     });
     this.subjectsService
-      .getSubject(this.id, this.usersService.userToken.token)
+      .getSubject(this.id)
       .subscribe((x) => (this.subject = x));
   }
   updateSubject($event: Subject) {
     // ovo izmeniti jer vraca novi emp umesto da update stari
     $event.id = this.id;
     this.subjectsService
-      .updateSubject($event, this.usersService.userToken.token)
+      .updateSubject($event)
       .pipe()
       .subscribe((x) => {
         console.log('============ID:====updated=========');
@@ -60,6 +60,6 @@ export class EditSubjectComponent {
     // this.historyService.saveEmployeeAcademicTitleHistory(history,this.usersService.userToken.token).subscribe();
     if($event.toSave.length==0&&$event.toDelete.length==0)
       return;
-    this.subjectEmployeesService.saveSubjectEmployees($event.toSave,$event.toDelete,this.usersService.userToken.token).subscribe();
+    this.subjectEmployeesService.saveSubjectEmployees($event.toSave,$event.toDelete).subscribe();
   }
 }

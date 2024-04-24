@@ -71,12 +71,12 @@ export class EmployeesComponent implements OnInit {
     private academicTitlesService: AcademicTitlesService,
     private educationTitlesService: EducationTitlesService,
     private departmentsService: DepartmentsService,
-    private usersService: UsersService
+    // private usersService: UsersService
   ) {}
   ngOnInit(): void {
 
     this.employeesService
-      .getEmployeesPage(1, 10, this.employeeFilter,this.usersService.userToken.token)
+      .getEmployeesPage(1, 10, this.employeeFilter)
       .subscribe((x) => {
         this.employees = x.content;
         this.totalPages = x.totalPages;
@@ -84,7 +84,7 @@ export class EmployeesComponent implements OnInit {
       });
 
     this.academicTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       // .pipe(catchError(x))
       .subscribe((x) => {
         // console.log('-----------------------');
@@ -94,13 +94,13 @@ export class EmployeesComponent implements OnInit {
       });
 
     this.educationTitlesService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {(this.educationTitles = x);
         this.educationTitles.unshift({ id:-1, name: '-- Select --' });
       });
 
     this.departmentsService
-      .getAll(this.usersService.userToken.token)
+      .getAll()
       .subscribe((x) => {this.departments = x;
         this.departments.unshift({ id:-1, name: '-- Select --' , shortName: '-- Select --' });
       });
@@ -110,31 +110,31 @@ export class EmployeesComponent implements OnInit {
   pageChanged(newPage: number): void {
     this.page = newPage;
     this.employeesService
-      .getEmployeesPage(newPage, this.size, this.employeeFilter,this.usersService.userToken.token)
+      .getEmployeesPage(newPage, this.size, this.employeeFilter)
       .subscribe((x) => {
         this.employees = x.content;
       });
   }
 
   sizeChanged(newSize: number): void {
-    console.log("logika:" + newSize);
+    // console.log("logika:" + newSize);
     this.size = newSize;
     this.employeesService
-    .getEmployeesPage(1, newSize, this.employeeFilter,this.usersService.userToken.token)
+    .getEmployeesPage(1, newSize, this.employeeFilter)
     .subscribe((x) => {
       this.page = 1;
-      console.log("subscribe:" + this.size);
+      // console.log("subscribe:" + this.size);
         this.employees = x.content;
         this.totalPages = x.totalPages;
-        console.log("x.content.length: ")
-        console.log(x.content.length)
+        // console.log("x.content.length: ")
+        // console.log(x.content.length)
       });
   }
 
   filterChanged(newFilter: EmployeeFilter): void {
     this.employeeFilter = newFilter;
     this.employeesService
-      .getEmployeesPage(1, this.size, this.employeeFilter,this.usersService.userToken.token)
+      .getEmployeesPage(1, this.size, this.employeeFilter)
       .subscribe((x) => {
         this.page = 1;
         this.employees = x.content;

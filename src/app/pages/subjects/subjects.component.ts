@@ -37,11 +37,11 @@ export class SubjectsComponent implements OnInit{
   studiesTypeFilter:string = "";
   constructor(
     private subjectsService: SubjectsService,
-    private usersService: UsersService
+    // private usersService: UsersService
   ) {}
   ngOnInit(): void {
     this.subjectsService
-      .getSubjectsPageWithoutFilter(1, 10,this.usersService.userToken.token).pipe(
+      .getSubjectsPageWithoutFilter(1, 10).pipe(
         catchError((err)=>{
           this.subjects = [];
           throw(err);
@@ -59,7 +59,7 @@ export class SubjectsComponent implements OnInit{
     this.page = newPage;
     if(this.studiesTypeFilter===""||this.studiesTypeFilter==="-- Select --"){
       this.subjectsService
-        .getSubjectsPageWithoutFilter(newPage, this.size,this.usersService.userToken.token).pipe(
+        .getSubjectsPageWithoutFilter(newPage, this.size).pipe(
           catchError((err)=>{
             this.subjects = [];
             throw(err);
@@ -71,7 +71,7 @@ export class SubjectsComponent implements OnInit{
     }
       else{
         this.subjectsService
-        .getSubjectsPage(newPage, this.size,this.usersService.userToken.token, this.studiesTypeFilter).pipe(
+        .getSubjectsPage(newPage, this.size,this.studiesTypeFilter).pipe(
           catchError((err)=>{
             this.subjects = [];
             throw(err);
@@ -88,7 +88,7 @@ export class SubjectsComponent implements OnInit{
     this.size = newSize;
     if(this.studiesTypeFilter===""||this.studiesTypeFilter==="-- Select --"){
       this.subjectsService
-      .getSubjectsPageWithoutFilter(1, newSize,this.usersService.userToken.token).pipe(
+      .getSubjectsPageWithoutFilter(1, newSize).pipe(
         catchError((err)=>{
           this.subjects = [];
           throw(err);
@@ -105,7 +105,7 @@ export class SubjectsComponent implements OnInit{
     }
       else{
         this.subjectsService
-    .getSubjectsPage(1, newSize,this.usersService.userToken.token, this.studiesTypeFilter).pipe(
+    .getSubjectsPage(1, newSize, this.studiesTypeFilter).pipe(
       catchError((err)=>{
         this.subjects = [];
         throw(err);
@@ -126,7 +126,7 @@ export class SubjectsComponent implements OnInit{
     this.studiesTypeFilter = newFilter;
     if(this.studiesTypeFilter===""||this.studiesTypeFilter==="-- Select --"){
       this.subjectsService
-      .getSubjectsPageWithoutFilter(1, this.size,this.usersService.userToken.token).pipe(
+      .getSubjectsPageWithoutFilter(1, this.size).pipe(
         catchError((err)=>{
           this.subjects = [];
           throw(err);
@@ -140,7 +140,7 @@ export class SubjectsComponent implements OnInit{
     }
       else{
         this.subjectsService
-      .getSubjectsPage(1, this.size,this.usersService.userToken.token, this.studiesTypeFilter).pipe(
+      .getSubjectsPage(1, this.size, this.studiesTypeFilter).pipe(
         catchError((err)=>{
           this.subjects = [];
           throw(err);

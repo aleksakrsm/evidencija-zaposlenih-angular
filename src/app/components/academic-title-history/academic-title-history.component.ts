@@ -293,8 +293,7 @@ export class AcademicTitleHistoryComponent implements OnInit {
     else
       this.academicTitleHistoryService
         .getEmployeeAcademicTitleHistory(
-          this.employeeID,
-          this.usersService.userToken.token
+          this.employeeID
         )
         .pipe(
           catchError((err) => {

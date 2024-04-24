@@ -6,6 +6,7 @@ import { UsersService } from '../../service/users.service';
 import { Router } from '@angular/router';
 import { RegistratingUser } from '../../domain/user.domain';
 import { catchError } from 'rxjs';
+import { LocalStorageService } from '../../service/localStorage.service';
 
 @Component({
   selector: 'app-register',
@@ -90,7 +91,7 @@ import { catchError } from 'rxjs';
 export class RegisterComponent {
   private usersService: UsersService = inject(UsersService);
   private router: Router = inject(Router);
-  constructor(private formBuilder: FormBuilder){}
+  constructor(private formBuilder: FormBuilder,private localStorageService: LocalStorageService){}
   registrationGroup = this.formBuilder.group({
     firstname:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
     lastname:this.formBuilder.control("",{ nonNullable: true, validators: [Validators.required] }),
@@ -121,7 +122,7 @@ export class RegisterComponent {
     )
     .subscribe({
       next: (x) => {
-        this.usersService.userToken.token = x.token;
+        this.localStorageService.set("userToken",x.token);
         this.router.navigate(['/home']);
       },
       error: (err) => {

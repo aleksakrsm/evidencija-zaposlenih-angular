@@ -232,8 +232,7 @@ export class SubjectEmployeesComponent implements OnInit {
     else{
       this.employeeSubjectService
         .getSubjectEmployees(
-          this.subjectID,
-          this.usersService.userToken.token
+          this.subjectID
         )
         .pipe(
           catchError((err) => {

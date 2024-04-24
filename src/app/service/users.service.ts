@@ -16,9 +16,6 @@ const USERS_API_URL = 'http://localhost:8080/webapp/user';
 })
 export class UsersService {
   private http = inject(HttpClient);
-
-  // userToken: UserToken = { token: '' };
-  userToken: UserToken = { token: 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImlhdCI6MTcxMzU5OTk0NywiZXhwIjoxNzEzNjQzMTQ3fQ.m1IgIj7iSEh7D4wdsZx25lcuxqoVHhMZNm_TDZIpu30' };
   regMail: string = '';
 
   public sendEmailgetToken(regReq: RegistrationRequest): Observable<Jwt> {
@@ -48,6 +45,6 @@ export class UsersService {
   }
 
   public logout() {
-    this.userToken = { token: '' };
+    // this.userToken = { token: '' };
   }
 }
