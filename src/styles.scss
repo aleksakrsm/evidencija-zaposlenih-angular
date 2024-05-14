@@ -2,3 +2,218 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+table th {
+    background-color: #46c0e4;
+    // background-color: rebeccapurple;
+    // color: white; /* Set text color to white for better readability */
+  }
+//  table thead {
+//     background-color: rebeccapurple;
+//   }
+  /* Style for even rows */
+  table tr:nth-child(even) {
+    background-color: #e0f7fa; /* Lighter blue */
+  }
+  
+  /* Style for odd rows */
+  table tr:nth-child(odd) {
+    background-color: #b2ebf2; /* Light blue */
+  }
+
+  th, td {
+    text-align: center;
+    padding: 8px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  label {
+    margin-bottom: 8px;
+  }
+  
+  input[type="text"],
+  select {
+    padding: 8px;
+    width: calc(50% - 8px); /* Adjust as needed */
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding and border are included in element's total width/height */
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #007bff; /* Bootstrap primary color */
+    color: white;
+    border: none;
+    margin: 2px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .chart-container {
+    width: 90%; /* Set width to 100% to fill the width of its parent container */
+    height: 420px; /* Set a fixed height or adjust as needed */
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+#page_size {
+    width: 3cm; /* Set the width to 3cm */
+  }
+.popup {
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-height: 10.5cm; /* Maximum height of 5cm */
+    overflow-y: auto; /* Enable vertical scrolling */
+  }
+  
+  .popup h3 {
+    margin-top: 0;
+  }
+  
+  .popup label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .popup select,
+  .popup input[type="text"] {
+    width: calc(100% - 12px); /* Adjust width as needed */
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .popup select:focus,
+  .popup input[type="text"]:focus {
+    outline: none;
+    border-color: #007bff; /* Change border color on focus */
+  }
+  
+  .popup button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .popup button:hover {
+    background-color: #0056b3; /* Darker shade of primary color on hover */
+  }
+  
+  .popup button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .publicView {
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;  
+  }
+  
+  .publicView form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  // .publicView label {
+  //   margin-bottom: 8px;
+  // }
+  
+  // .publicView input[type="text"],
+  // .publicView select {
+  //   padding: 8px;
+  //   width: calc(50% - 8px); /* Adjust as needed */
+  //   margin-bottom: 12px;
+  //   border: 1px solid #ccc;
+  //   border-radius: 4px;
+  //   box-sizing: border-box; /* Ensure padding and border are included in element's total width/height */
+  // }
+  
+  // .publicView  button {
+  //   padding: 10px 20px;
+  //   background-color: #007bff; /* Bootstrap primary color */
+  //   color: white;
+  //   border: none;
+  //   border-radius: 4px;
+  //   cursor: pointer;
+  // }
+
+  .publicView {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .publicView h2 {
+    margin-top: 0;
+  }
+  
+  .publicView a {
+    display: block;
+    margin-bottom: 10px;
+    text-decoration: none;
+  }
+  
+  .publicView input[type="button"] {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .publicView input[type="button"]:hover {
+    background-color: #0056b3;
+  }
+
+  .publicView input[type="text"],
+.publicView input[type="password"] {
+  width: 100%;
+  padding: 10px 20px;
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.publicView input[type="text"]:focus,
+.publicView input[type="password"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.publicView input[type="text"]:hover,
+.publicView input[type="password"]:hover {
+  border-color: #999999;
+}
+.publicView input[type="password"] {
+  width: calc(100% - 40px); /* Set the width to 100% minus 40px for padding and lock icon */
+  padding: 10px 20px; /* Adjust padding as needed */
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}

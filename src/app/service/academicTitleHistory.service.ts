@@ -15,18 +15,11 @@ export class AcademicTitleHistoryService{
     
     public getEmployeeAcademicTitleHistory(employeeId:number):Observable<EmployeeAcademicTitle[]>{
       const url = EMPLOYEE_ACADEMIC_TITLES_API_URL+`/get/employee/${employeeId}`;
-      // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
-      // return this.http.get<EmployeeAcademicTitle[]>(url,{headers});
       return this.http.get<EmployeeAcademicTitle[]>(url);
     }
     public saveEmployeeAcademicTitleHistory(toSave:EmployeeAcademicTitle[],toDelete:EmployeeAcademicTitle[]):Observable<EmployeeAcademicTitle[]>{
       const url = EMPLOYEE_ACADEMIC_TITLES_API_URL+`/saveChanges`;//ovo promeniti
       const body =JSON.stringify({toSave:toSave,toDelete:toDelete}, null, 2);
-      // const headers = new HttpHeaders().set('Authorization', 'Bearer ' + jwt);
-      // const body =`"toSave":${JSON.stringify(toSave)},"toDelete":${JSON.stringify(toDelete)}`;
-      // console.log(body);
-      // console.log(history.length)
-      // return this.http.post<EmployeeAcademicTitle[]>(url,body,{headers});
       return this.http.post<EmployeeAcademicTitle[]>(url,body);
     }
 

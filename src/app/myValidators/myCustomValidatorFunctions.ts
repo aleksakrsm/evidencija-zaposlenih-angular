@@ -32,3 +32,11 @@ export function validCmbSelectionInitial() : ValidatorFn{
         return (control.getRawValue() !== "-- Select --")? null: {"required fields must not remain empty":"u must select value"};
     };
 }
+export function validDateTxtSelection() : ValidatorFn{
+    return (control: AbstractControl): ValidationErrors | null => {
+        console.log("1");
+        // if(!control.touched && !control.dirty) return null;
+        console.log("2");
+        return (control.getRawValue() !== "DD.MM.YYYY")? null: {"required fields must not remain empty":"u must select date"};
+    };
+}

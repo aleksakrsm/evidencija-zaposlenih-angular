@@ -16,6 +16,7 @@ import { DepartmentsComponent } from './pages/departments/departments.component'
 import { EditDepartmentComponent } from './pages/edit-department/edit-department.component';
 import { AddDepartmentComponent } from './pages/add-department/add-department.component';
 import { canActivateTokenGuard } from './guards/auth-guard.service';
+import { ReportsComponent } from './pages/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -41,7 +42,8 @@ export const routes: Routes = [
       {path:"subjects",title: 'Subjects',component:SubjectsComponent},
       {path:"departments/add",title: 'AddDepartment',component:AddDepartmentComponent},
       {path:"departments/:id",title: 'Department',component:EditDepartmentComponent},
-      {path:"departments",title: 'Departments',component:DepartmentsComponent}
+      {path:"departments",title: 'Departments',component:DepartmentsComponent},
+      {path:"reports",title: 'Reports',component:ReportsComponent}
     ],
     canActivate:[canActivateTokenGuard]
   },

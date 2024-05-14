@@ -34,6 +34,7 @@ export class EmployeeInfoComponent implements OnInit {
   @Input() academicTitles: AcademicTitle[] = [];
   @Input() educationTitles: EducationTitle[] = [];
   @Input() departments: Department[] = [];
+  @Input() showStatus: boolean = true;
 
   @Input() set employee({
     status,

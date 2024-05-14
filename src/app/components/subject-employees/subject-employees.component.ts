@@ -60,10 +60,10 @@ import { Employee } from '../../domain/employee.domain';
           </tr>
         </tbody>
       </table>
-      <button (click)="addClicked()">Add Employee</button>
-      <br />
-      <button (click)="saveEmployees()">Save Empolyees</button>
     </form>
+    <button (click)="addClicked()">Add Teacher</button>
+    <!-- <br /> -->
+    <button (click)="saveEmployees()">Save Table Data</button>
   `,
   styleUrl: './subject-employees.component.scss',
 })
@@ -95,13 +95,13 @@ export class SubjectEmployeesComponent implements OnInit {
   }
   openPopup(): void {
     const dialogRef = this.popup.open(AddEmployeePopup, {
-      width: '250px',
+      width: '342px',
       id: 'chooseEmployee',
       disableClose: true,
     });
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed with result:', result);
-      if (result !== null && !this.subjectEmployees.find((x) => x.id.employee === result)) {
+      if (result !== null && !this.subjectEmployees.find((x) => x.id.employee.id === result.id)) {
         this.addItem(result);//ovde dodajem samo primarni kljuc. jos nisam oznacio classType!!!
       }
     });

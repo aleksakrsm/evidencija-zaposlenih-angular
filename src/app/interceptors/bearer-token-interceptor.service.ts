@@ -20,6 +20,7 @@ export class BearerTokenInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     let token = this.localStorageService.get('userToken');
+    console.log(token);
     if (token) {
       req = req.clone({
         url: req.url,

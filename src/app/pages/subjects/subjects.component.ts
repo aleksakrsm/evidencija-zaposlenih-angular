@@ -37,7 +37,6 @@ export class SubjectsComponent implements OnInit{
   studiesTypeFilter:string = "";
   constructor(
     private subjectsService: SubjectsService,
-    // private usersService: UsersService
   ) {}
   ngOnInit(): void {
     this.subjectsService
@@ -99,8 +98,8 @@ export class SubjectsComponent implements OnInit{
         console.log("subscribe:" + this.size);
           this.subjects = x.content;
           this.totalPages = x.totalPages;
-          console.log("x.content.length: ")
-          console.log(x.content.length)
+          // console.log("x.content.length: ")
+          // console.log(x.content.length)
         });
     }
       else{
@@ -116,8 +115,8 @@ export class SubjectsComponent implements OnInit{
       console.log("subscribe:" + this.size);
         this.subjects = x.content;
         this.totalPages = x.totalPages;
-        console.log("x.content.length: ")
-        console.log(x.content.length)
+        // console.log("x.content.length: ")
+        // console.log(x.content.length)
       });
     }
   }

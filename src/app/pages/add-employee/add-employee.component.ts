@@ -15,7 +15,7 @@ import { Employee } from '../../domain/employee.domain';
   standalone: true,
   imports: [EmployeeInfoComponent],
   template:`
-    <app-employee-info [academicTitles]="academicTitles" [departments]="departments" [educationTitles]="educationTitles" (employeeEmitter)="saveEmployee($event)"></app-employee-info>
+    <app-employee-info [academicTitles]="academicTitles" [departments]="departments" [educationTitles]="educationTitles" (employeeEmitter)="saveEmployee($event)" [showStatus]="false"></app-employee-info>
   `,
   styleUrl: './add-employee.component.scss'
 })

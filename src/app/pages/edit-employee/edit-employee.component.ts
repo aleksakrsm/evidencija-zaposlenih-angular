@@ -15,17 +15,15 @@ import { Status } from '../../domain/status.enum';
 import { AcademicTitleHistoryComponent } from '../../components/academic-title-history/academic-title-history.component';
 import { EmployeeAcademicTitle } from '../../domain/employeeAcademicTitle.domain';
 import { AcademicTitleHistoryService } from '../../service/academicTitleHistory.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialog } from '../../components/confirmDialog';
 
 @Component({
   selector: 'app-edit-employee',
   standalone: true,
-  imports: [EmployeeInfoComponent, AcademicTitleHistoryComponent],
-  // templateUrl: './edit-employee.component.html',
+  imports: [EmployeeInfoComponent, AcademicTitleHistoryComponent,CommonModule],
   template: `
     <h2>Employee {{ employee.firstname }} {{ employee.lastname }}</h2>
-
-    <!-- radi: -->
-    <!-- {{ employee?.firstname }} -->
     <app-employee-info
       [academicTitles]="academicTitles"
       [departments]="departments"
@@ -33,17 +31,50 @@ import { AcademicTitleHistoryService } from '../../service/academicTitleHistory.
       (employeeEmitter)="updateEmployee($event)"
       [employee]="employee"
     ></app-employee-info>
+    <button *ngIf="employee.status==='ACTIVE'" mat-raised-button (click)="openConfirmDeleteDialog('0ms', '0ms')">Delete Employee</button>
+    <button *ngIf="employee.status==='INACTIVE'" mat-raised-button (click)="openConfirmRestoreDialog('0ms', '0ms')">Restore Employee</button>
     <app-academic-title-history
      [employeeID]="id"
      [academicTitles]="academicTitles" 
      [employee]="employee"
      (historyEmitter)="saveHistory($event)"
      ></app-academic-title-history>
-     <!-- (deleteHistoryEmitter)="saveHistory($event)" -->
   `,
   styleUrl: './edit-employee.component.scss',
 })
 export class EditEmployeeComponent implements OnInit {
+  openConfirmDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfirmDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data:{
+        title:"Delete Employee",
+        message:"Are You sure You want to delete this employee? This action will only logically delete employee."
+      }
+    }).afterClosed().subscribe(x=>{
+      let result:boolean = x;
+      if(result){
+        this.employeesService.deleteLogically(this.id).subscribe(x=>this.employee = x);
+      }
+    });
+  }
+  openConfirmRestoreDialog(enterAnimationDuration: string, exitAnimationDuration: string): void {
+    this.dialog.open(ConfirmDialog, {
+      width: '250px',
+      enterAnimationDuration,
+      exitAnimationDuration,
+      data:{
+        title:"Restore Employee",
+        message:"Are You sure You want to restore this employee? This action will logically restore employee."
+      }
+    }).afterClosed().subscribe(x=>{
+      let result:boolean = x;
+      if(result){
+        this.employeesService.restoreLogically(this.employee).subscribe(x=>this.employee = x);
+      }
+    });
+  }
 
   id!: number;
   employee: Employee = {
@@ -59,8 +90,8 @@ export class EditEmployeeComponent implements OnInit {
   educationTitles: EducationTitle[] = [];
   departments: Department[] = [];
   constructor(
+    public dialog: MatDialog,
     private employeesService: EmployeesService,
-    // private usersService: UsersService,
     private location: Location,
     private academicTitlesService: AcademicTitlesService,
     private historyService: AcademicTitleHistoryService,
@@ -113,7 +144,6 @@ export class EditEmployeeComponent implements OnInit {
       });
   }
   saveHistory($event:{toSave:EmployeeAcademicTitle[],toDelete:EmployeeAcademicTitle[]}) {
-    // this.historyService.saveEmployeeAcademicTitleHistory(history,this.usersService.userToken.token).subscribe();
     if($event.toSave.length==0&&$event.toDelete.length==0)
       return;
     this.historyService.saveEmployeeAcademicTitleHistory($event.toSave,$event.toDelete).subscribe(

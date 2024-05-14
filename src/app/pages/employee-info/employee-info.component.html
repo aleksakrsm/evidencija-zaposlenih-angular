@@ -1,13 +1,15 @@
 <h3>Basic info:</h3>
 <form [formGroup]="employeeForm">
-  <label for="status">Status: </label>
-  <input
+  <div *ngIf="showStatus">
+    <label for="status">Status: </label><br>
+    <input
     type="text"
     name="status"
     id="status"
     formControlName="status"
     readonly
-  />
+    />
+  </div>
   <br />
   <label for="firstname">Firstname: </label>
   <input
