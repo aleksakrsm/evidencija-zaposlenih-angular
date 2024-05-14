@@ -7,6 +7,9 @@ export class DateHeplerService {
   public getDateFromQueue(birthdayQueue: unknown): Date | null {
     if(!birthdayQueue)
     return null;
+    if(birthdayQueue instanceof Date && (birthdayQueue as Date).toUTCString() != "Invalid Date"){
+      return (birthdayQueue as Date);
+    }
     let queue = birthdayQueue as [
       year: number,
       month: number,
@@ -37,6 +40,13 @@ export class DateHeplerService {
     return convertedDate;
   }
   public getFormatedDateStringFromQueue(birthdayQueue: unknown): string {
+    if(birthdayQueue instanceof Date){//vrati za invalid date
+      return ((birthdayQueue as Date).toUTCString()!=="Invalid Date")? (birthdayQueue as Date).toLocaleDateString('de-DE', {
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+      }):"DD.MM.YYY";
+    }
     if(!birthdayQueue)
     return "";
     let queue = birthdayQueue as [

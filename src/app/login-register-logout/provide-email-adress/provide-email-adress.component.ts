@@ -8,18 +8,20 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
   standalone: true,
   imports: [ReactiveFormsModule],
   template: `
-    <p>Provide Your email adress</p>
-    <label for="email">Adress:</label>
-    <input type="email" name="email" id="email" [formControl]="emailInput"/>
-    <br />
-    <br />
-    <button
-      type="button"
-      (click)="sendRegisterRequest()"
-      [disabled]="!emailInput.valid"
-    >
-      Send link
-    </button>
+    <div class="publicView">
+      <p>Provide Your email adress</p>
+      <label for="email">Adress:</label>
+      <input type="email" name="email" id="email" [formControl]="emailInput" />
+      <br />
+      <br />
+      <button
+        type="button"
+        (click)="sendRegisterRequest()"
+        [disabled]="!emailInput.valid"
+      >
+        Send link
+      </button>
+    </div>
   `,
   styles: [
     `
@@ -50,10 +52,10 @@ export class ProvideEmailAdressComponent {
     this.email = this.emailInput.getRawValue().trim();
     let regReq: RegistrationRequest = {
       email: this.email,
-      link: this.getContextPath()+`/account/registrationCheck`,//ovo promeniti da ne bi uvek slalo localhost4200
-      randomString: this.generateRandomString(this.generateRandomNumber(5, 10))
+      link: this.getContextPath() + `/account/registrationCheck`, //ovo promeniti da ne bi uvek slalo localhost4200
+      randomString: this.generateRandomString(this.generateRandomNumber(5, 10)),
     };
-    this.usersService.sendEmailgetToken(regReq).subscribe(x=>{
+    this.usersService.sendEmailgetToken(regReq).subscribe((x) => {
       this.usersService.regMail = regReq.email;
     });
   }

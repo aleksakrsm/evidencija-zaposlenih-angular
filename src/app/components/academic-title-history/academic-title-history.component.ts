@@ -10,7 +10,7 @@ import { EmployeeAcademicTitle } from '../../domain/employeeAcademicTitle.domain
 import { AcademicTitleHistoryService } from '../../service/academicTitleHistory.service';
 import { UsersService } from '../../service/users.service';
 import { DateHeplerService } from '../../service/dateHelper.service';
-import { catchError, throwError } from 'rxjs';
+import { catchError, last, throwError } from 'rxjs';
 import {
   MatDialog,
   MatDialogConfig,
@@ -52,11 +52,10 @@ import { Employee } from '../../domain/employee.domain';
             <td>
               <input
                 type="text"
+                readonly
                 placeholder="DD.MM.YYYY"
                 formControlName="beginDate"
                 id="beginDate-{{ i }}"
-                (focus)="onDateFocus(i, 'beginDate')"
-                (blur)="onDateBlur(i, 'beginDate')"
               />
             </td>
             <td>
@@ -67,16 +66,17 @@ import { Employee } from '../../domain/employee.domain';
                 id="endDate-{{ i }}"
                 (focus)="onDateFocus(i, 'endDate')"
                 (blur)="onDateBlur(i, 'endDate')"
+                
               />
             </td>
             <td><button (click)="deleteItem(i)">X</button></td>
           </tr>
         </tbody>
       </table>
-      <button (click)="addClicked()">Add New Item</button>
-      <br />
-      <button (click)="saveTitles()">Save Titles</button>
     </form>
+    <button (click)="addClicked()">Add New Item</button>   
+    <!-- <br /> -->
+    <button (click)="saveTitles()">Save Titles</button>
   `,
   styleUrl: './academic-title-history.component.scss',
 })
@@ -85,20 +85,17 @@ export class AcademicTitleHistoryComponent implements OnInit {
   updateItems: EmployeeAcademicTitle[] = [];
   addedItems: EmployeeAcademicTitle[] = [];
   deleteItems: EmployeeAcademicTitle[] = [];
+  form: FormGroup;
   @Output() historyEmitter: EventEmitter<{
     toSave: EmployeeAcademicTitle[];
     toDelete: EmployeeAcademicTitle[];
   }> = new EventEmitter();
-  // @Output() historyEmitter:EventEmitter<EmployeeAcademicTitle[]>  = new EventEmitter();
-  // @Output() deleteHistoryEmitter:EventEmitter<EmployeeAcademicTitle[]>  = new EventEmitter();
   @Input() employeeID?: number;
   @Input() employee!: Employee;
   @Input() academicTitles!: AcademicTitle[];
-  form: FormGroup;
   constructor(
     private academicTitleHistoryService: AcademicTitleHistoryService,
     private formBuilder: FormBuilder,
-    private usersService: UsersService,
     public dateHelper: DateHeplerService,
     public popup: MatDialog
   ) {
@@ -106,27 +103,108 @@ export class AcademicTitleHistoryComponent implements OnInit {
       historyItems: this.formBuilder.array([]),
     });
   }
+  isTableComplete(): boolean {
+    // if (this.employeeATHistory.length <= 1) return true;
+    // if (this.employeeATHistory.at(this.employeeATHistory.length-1)?.endDate) return true;
+    // return false;
+    if (this.employeeATHistory.length < 1) {
+      // console.log(length + " - ovo je duzina");
+      return true;
+    };
+    if (this.employeeATHistory.at(this.employeeATHistory.length-1)?.endDate && this.employeeATHistory.at(this.employeeATHistory.length-1)?.endDate?.toString()!="Invalid Date"){
+      // console.log(this.employeeATHistory.at(this.employeeATHistory.length-1)?.endDate + " - ovo je endDate");
+      return true;
+    };
+    return false;
+  }
+  addClicked(): void {
+    // console.log("kliknuo sam add. duzina liste titula je sledeca: "+this.employeeATHistory.length);
+    this.openPopup();
+  }
   openPopup(): void {
+    if (!this.isTableComplete()) {
+      return;
+    }
     const dialogRef = this.popup.open(AddAcademicHIPopup, {
-      width: '250px',
+      width: '343px',
+      // height:'250px',
       id: 'chooseTitle',
-      // hasBackdrop: true,
-      // ariaModal: true,
       disableClose: true,
-      data: { academicTitles: this.academicTitles },
+      data: { academicTitles: this.academicTitles, employee: this.employee },
     });
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed with result:', result);
-      if (
-        result !== '-- Select --' &&
-        !this.employeeATHistory.find(
-          (x) => x.historyItemIdDto.academicTitle.name === result
-        )
-      ) {
-        this.addItem(this.findAT(result));
+      if (result !== null && this.validateItemDuration(result)) {
+        this.addHistoryItem(result);
       }
     });
   }
+  validateItemDuration(historyItem: EmployeeAcademicTitle): boolean {
+    // console.log("1");
+    // console.log("pocetak validacije");
+    // console.log(JSON.stringify({toSave: this.updateItems,toDelete: this.deleteItems,allItems:this.employeeATHistory},null,2));
+    if (this.employeeATHistory.length < 1) return true;
+    // console.log("2");
+    if(!historyItem.endDate || historyItem.endDate?.toUTCString()==="Invalid Date"){
+      // console.log("3");
+      let lastInterval = true;
+      this.employeeATHistory.forEach(element => {
+        // console.log(historyItem.historyItemIdDto.beginDate);
+        // console.log(this.dateHelper.getDateFromQueue(element.endDate!));
+        // console.log(historyItem.historyItemIdDto.beginDate <= this.dateHelper.getDateFromQueue(element.endDate!)!);
+        if(historyItem.historyItemIdDto.beginDate <= this.dateHelper.getDateFromQueue(element.endDate!)!){
+          lastInterval = false;
+          // return;
+        }
+      });
+      // console.log("4");
+      // if(lastInterval){
+        //   return true;
+        // }
+        return lastInterval;
+      }// posle ove linije ja znam da sigurno last interval postoji upisan i znam da nije poslenji interval
+      // console.log("5");
+
+    //proveri da li je BD u nekom intervalu
+    // broveriti da li je begin date veci od najveceg end date
+    let beginDateOutsideIntervals = true;
+    this.employeeATHistory.forEach((element) => {
+      if (
+        this.dateHelper.getDateFromQueue(element.historyItemIdDto.beginDate!)! <=
+          historyItem.historyItemIdDto.beginDate &&
+          this.dateHelper.getDateFromQueue(element.endDate!)! >= historyItem.historyItemIdDto.beginDate
+      ) {
+        beginDateOutsideIntervals = false;
+        // return;
+      }
+    });
+
+    let endDateOutsideIntervals = true;
+    // if (historyItem.endDate) {// a sta ako nemam enddate a pocetni interval je negde u sredini u supljini...
+      //end date sme da fali samo ako je begin date poslednji(posle poslednjeg end data), a tad je automatski ok.
+      this.employeeATHistory.forEach((element) => {
+        if (
+          this.dateHelper.getDateFromQueue(element.historyItemIdDto.beginDate!)! <= historyItem.endDate! &&
+          this.dateHelper.getDateFromQueue(element.endDate!)! >= historyItem.endDate!
+          ) {
+            endDateOutsideIntervals = false;
+            // return;
+          }
+        });
+      // }
+      let doesntOverlap = true;
+    this.employeeATHistory.forEach((element) => {
+      if (// ovde moze da pukne ako historyItem nema endDate
+      this.dateHelper.getDateFromQueue(element.historyItemIdDto.beginDate!)! > historyItem.historyItemIdDto.beginDate &&
+        this.dateHelper.getDateFromQueue(element.endDate!)! < historyItem.endDate!
+      ) {
+        doesntOverlap = false;
+        // return;
+      }
+    });
+    return doesntOverlap&&endDateOutsideIntervals&&beginDateOutsideIntervals;
+  }
+  
   deleteItem(i: number): void {
     //samo iz niza i iz kontrola
     this.historyItems.removeAt(i); //iz kontrole
@@ -163,19 +241,17 @@ export class AcademicTitleHistoryComponent implements OnInit {
         this.deleteItems.push(deletedItem);
       }
     }
-    this.employeeATHistory.splice(i,1);
+    this.employeeATHistory.splice(i, 1);
   }
-  addClicked(): void {
-    this.openPopup();
-  }
+  
   saveTitles(): void {
     //proci kroz sve added i ako added ne postoji u update, dodati ga tu.
     this.addedItems.forEach((element) => {
       if (
         !this.updateItems.find(
           (x) =>
-            x.historyItemIdDto.academicTitle.id ===
-            element.historyItemIdDto.academicTitle.id
+            x.historyItemIdDto ===
+            element.historyItemIdDto
         )
       )
         this.updateItems.push(element);
@@ -185,35 +261,26 @@ export class AcademicTitleHistoryComponent implements OnInit {
       toDelete: this.deleteItems,
     });
     window.location.reload();
+    // console.log(JSON.stringify({toSave: this.updateItems,toDelete: this.deleteItems}),null,2);
   }
-  private addItem(at: AcademicTitle) {
-    let employeeAcademicTitle: EmployeeAcademicTitle = {
-      historyItemIdDto: { academicTitle: at, employee: this.employee },
-    };
-    this.addItemToArray(employeeAcademicTitle);
-    this.employeeATHistory.push(employeeAcademicTitle);
-    this.addedItems.push(employeeAcademicTitle);
-  }
-  private findAT(title: string): AcademicTitle {
-    let at = this.academicTitles.find((x) => x.name === title);
-    let titleR: AcademicTitle = { id: -1, name: '' };
-    if (!at) throwError(Error);
-    else titleR = at;
-    return titleR;
-  }
-
+  
   get historyItems(): FormArray {
     return this.form.get('historyItems') as FormArray;
+  }
+  private addHistoryItem(item: EmployeeAcademicTitle) {
+    this.addItemToArray(item);
+    this.employeeATHistory.push(item);
+    this.addedItems.push(item);
+    // console.log(JSON.stringify({toSave: this.updateItems,toDelete: this.deleteItems,allItems:this.employeeATHistory},null,2));
   }
   addItemToArray(item: EmployeeAcademicTitle): void {
     this.historyItems.push(this.createItemGroup(item));
   }
   createItemGroup(item: EmployeeAcademicTitle): FormGroup {
+    // console.log(item.endDate+"^^^^^^^^^^^^^^^");
     return this.formBuilder.group({
       title: [item.historyItemIdDto.academicTitle.name],
-      beginDate: [
-        this.dateHelper.getFormatedDateStringFromQueue(item.beginDate),
-      ],
+      beginDate: [this.dateHelper.getFormatedDateStringFromQueue(item.historyItemIdDto.beginDate)],
       endDate: [this.dateHelper.getFormatedDateStringFromQueue(item.endDate)],
     });
   }
@@ -225,6 +292,14 @@ export class AcademicTitleHistoryComponent implements OnInit {
   previousDate: string = '';
 
   onDateFocus(i: number, fieldName: string) {
+    // console.log(i+" "+ this.employeeATHistory.length);
+    if (i < this.employeeATHistory.length-1){
+      const dateInputElement = document.getElementById(// ovo je dodatno
+        `${fieldName}-${i}`
+      ) as HTMLInputElement;
+      dateInputElement.readOnly = true;
+      return;
+    }
     const dateInputElement = document.getElementById(
       `${fieldName}-${i}`
     ) as HTMLInputElement;
@@ -237,67 +312,104 @@ export class AcademicTitleHistoryComponent implements OnInit {
     dateInputElement.valueAsDate = convertedDate;
   }
   onDateBlur(i: number, fieldName: string) {
+
+    if (i < this.employeeATHistory.length-1){
+      const dateInputElement = document.getElementById(
+        `${fieldName}-${i}`
+      ) as HTMLInputElement;
+      dateInputElement.readOnly = false;
+      return;
+    }
     const dateInputElement = document.getElementById(
       `${fieldName}-${i}`
     ) as HTMLInputElement;
     const selectedDate = new Date(dateInputElement?.value);
-    console.log('date------' + selectedDate);
+    // console.log('date------' + selectedDate);
     if (!this.historyItems.get(`${i}`)?.get(`${fieldName}`)!.value) {
       this.historyItems.get(`${i}`)!.get(`${fieldName}`)!.setValue(null);
     }
     if (dateInputElement) {
       dateInputElement.type = 'text';
     }
-    let newItem: EmployeeAcademicTitle = {
-      historyItemIdDto: {
-        academicTitle: { id: -1, name: '' },
-        employee: this.employee,
-      },
-    };
-    if (fieldName === 'beginDate') {
-      let itemN = this.employeeATHistory.at(i);
-      if (!itemN) {
-        throwError(Error);
-      } else {
-        newItem = {
-          historyItemIdDto: itemN.historyItemIdDto,
-          beginDate: selectedDate,
-          endDate: itemN.endDate,
-        };
-      }
-    } else {
-      let itemN = this.employeeATHistory.at(i);
-      if (!itemN) {
-        throwError(Error);
-      } else {
-        newItem = {
-          historyItemIdDto: itemN.historyItemIdDto,
-          beginDate: itemN.beginDate,
-          endDate: selectedDate,
-        };
-      }
-    }
-    if (selectedDate.toUTCString() === 'Invalid Date')
-      dateInputElement.value = 'DD.MM.YYYY';
-    else
-      dateInputElement.value = this.dateHelper.formatDateToString(selectedDate);
-    if (this.previousDate !== dateInputElement.value && !(this.previousDate===''&& dateInputElement.value==='DD.MM.YYYY')) {
-      console.log('==1=='+this.previousDate);
-      console.log('===2==='+dateInputElement.value);
-      this.updateItems.push(newItem); // sta ako sam dodao item kao new (added lista), a sta ako sam neki postojeci izmenio, pa posle obrisao???
-    }
-  }
 
+
+
+    let itemEddited = this.employeeATHistory.at(i);
+    // console.log(">>>>>>>>>1>>>>>>>>>>>>");
+    if (!itemEddited) throwError(Error);
+    else {
+      // console.log(">>>>>>>>>2>>>>>>>>>>>>");
+      if (fieldName === 'beginDate') {
+        // console.log(">>>>>>>>>3>>>>>>>>>>>>");
+        itemEddited.historyItemIdDto.beginDate = selectedDate;
+      } else {// endDate
+        // console.log(">>>>>>>>>4>>>>>>>>>>>>");
+        if(this.dateHelper.getDateFromQueue(itemEddited.historyItemIdDto.beginDate)!<selectedDate){// ED>BD
+
+          // console.log(">>>>>>>>>5>>>>>>>>>>>>");
+          // samo ako je 
+          itemEddited.endDate = selectedDate;
+        }
+      }
+    }
+    // console.log("-----------------");
+    if (selectedDate.toUTCString() === 'Invalid Date'){
+      // console.log("----------1-------");
+    dateInputElement.value = 'DD.MM.YYYY';
+
+    }
+    else{
+    // console.log("----------2-------");
+    // console.log(selectedDate);
+    // console.log(this.dateHelper.getDateFromQueue(itemEddited?.historyItemIdDto.beginDate!)!);
+    if(selectedDate<this.dateHelper.getDateFromQueue(itemEddited?.historyItemIdDto.beginDate!)!){
+        // console.log("----------3-------");
+        dateInputElement.value = this.previousDate;
+      }
+      else{
+        // console.log("----------4-------");
+        dateInputElement.value = this.dateHelper.formatDateToString(selectedDate);
+      }
+    }
+    if (
+      this.previousDate !== dateInputElement.value &&
+      !(this.previousDate === '' && dateInputElement.value === 'DD.MM.YYYY')
+    ) {
+      // console.log('==1==' + this.previousDate);
+      // console.log('===2===' + dateInputElement.value);
+      if(dateInputElement.value === 'DD.MM.YYYY') {
+        if(this.isLastInterval(itemEddited!)){
+          itemEddited!.endDate =undefined;
+        }
+        else{
+          dateInputElement.value = this.previousDate;
+          return;
+        }
+      }
+      if (!itemEddited) throwError(Error);
+      else this.updateItems.push(itemEddited); // sta ako sam dodao item kao new (added lista), a sta ako sam neki postojeci izmenio, pa posle obrisao???
+    }
+    // console.log('Update items: ');
+    // console.log(JSON.stringify(this.updateItems,null,2));
+  }
+  isLastInterval(item:EmployeeAcademicTitle):boolean{
+    let isLast=true;
+    // console.log("islast:   "+item.historyItemIdDto.beginDate);
+    this.employeeATHistory.forEach(element => {
+      if(this.dateHelper.getDateFromQueue(element.historyItemIdDto.beginDate)!>item.historyItemIdDto.beginDate){
+        isLast = false;
+      }
+    });
+    return isLast;
+  }
   ngOnInit(): void {
     if (!this.employeeID) return;
     else
       this.academicTitleHistoryService
-        .getEmployeeAcademicTitleHistory(
-          this.employeeID
-        )
+        .getEmployeeAcademicTitleHistory(this.employeeID)
         .pipe(
           catchError((err) => {
-            console.log('PROBLEM');
+            // console.log('PROBLEM');
             throw Error;
           })
         )

@@ -13,54 +13,56 @@ import { LocalStorageService } from '../../service/localStorage.service';
   standalone: true,
   imports: [ReactiveFormsModule,CommonModule],
   template: `
-  <h2>Register form</h2>
-  <form [formGroup]="registrationGroup">
-    <div>
-      <label for="firstname">Firstname: </label>
-      <input
+  <div class="publicView">
+
+    <h2>Register form</h2>
+    <form [formGroup]="registrationGroup">
+      <div>
+        <label for="firstname">Firstname: </label>
+        <input
         type="text"
         name="firstname"
         id="firstname"
         formControlName="firstname"
-      />
-    </div>
-    <div *ngIf="registrationGroup.get('firstname')?.errors?.['required']">
-      firstname is required.
-    </div>
+        />
+      </div>
+      <div *ngIf="registrationGroup.get('firstname')?.errors?.['required']">
+        firstname is required.
+      </div>
     <br>
     <div>
       <label for="lastname">Lastname: </label>
       <input
-        type="text"
-        name="lastname"
+      type="text"
+      name="lastname"
         id="lastname"
         formControlName="lastname"
       />
     </div>
     <div *ngIf="registrationGroup.get('lastname')?.errors?.['required']">
-    lastname is required.
+      lastname is required.
     </div>
     <br>
     <div>
       <label for="username">Username: </label>
       <input
-        type="text"
+      type="text"
         name="username"
         id="username"
         formControlName="username"
-      />
-    </div>
-    <div *ngIf="registrationGroup.get('username')?.errors?.['required']">
+        />
+      </div>
+      <div *ngIf="registrationGroup.get('username')?.errors?.['required']">
       username is required.
     </div>
     <br>
     <div>
       <label for="password">Password: </label>
       <input
-        type="password"
-        name="password"
-        id="password"
-        formControlName="password"
+      type="password"
+      name="password"
+      id="password"
+      formControlName="password"
       />
     </div>
     <div *ngIf="registrationGroup.get('password')?.errors?.['required']">
@@ -70,22 +72,23 @@ import { LocalStorageService } from '../../service/localStorage.service';
     <div>
       <label for="confirmPassword">Confirm password: </label>
       <input
-        type="password"
-        name="confirmPassword"
-        id="confirmPassword"
-        formControlName="confirmPassword"
+      type="password"
+      name="confirmPassword"
+      id="confirmPassword"
+      formControlName="confirmPassword"
       />
     </div>
     <div *ngIf="registrationGroup.get('confirmPassword')?.errors?.['required']">
-    confirmPassword is required.
+      confirmPassword is required.
     </div>
     <div *ngIf="registrationGroup?.errors?.['password not confirmed']">
-    confirmPassword and password must match
+      confirmPassword and password must match
     </div>
     <br />
     <input type="button" value="Register" (click)="register()" [disabled]="registrationGroup.valid == false" />
   </form>
-`,
+  </div>
+  `,
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {

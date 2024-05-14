@@ -45,6 +45,6 @@ export class UsersService {
   }
 
   public logout() {
-    // this.userToken = { token: '' };
+
   }
 }

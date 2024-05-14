@@ -16,15 +16,17 @@ import { LocalStorageService } from '../../service/localStorage.service';
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   template: `
+  <div class="publicView">
+
     <h2>Login form</h2>
     <form [formGroup]="loginGroup">
       <div>
         <label for="username">Username: </label>
         <input
-          type="text"
-          name="username"
-          id="username"
-          formControlName="username"
+        type="text"
+        name="username"
+        id="username"
+        formControlName="username"
         />
       </div>
       <div *ngIf="loginGroup.get('username')?.errors?.['required']">
@@ -34,10 +36,10 @@ import { LocalStorageService } from '../../service/localStorage.service';
       <div>
         <label for="password">Password: </label>
         <input
-          type="password"
-          name="password"
-          id="password"
-          formControlName="password"
+        type="password"
+        name="password"
+        id="password"
+        formControlName="password"
         />
       </div>
       <div *ngIf="loginGroup.get('password')?.errors?.['required']">
@@ -46,7 +48,8 @@ import { LocalStorageService } from '../../service/localStorage.service';
       <br />
       <input type="button" value="Login" (click)="login()" />
     </form>
-  `,
+    </div>
+    `,
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
@@ -62,6 +65,7 @@ export class LoginComponent {
     let username = this.loginGroup.get('username')?.getRawValue();
     let password = this.loginGroup.get('password')?.getRawValue();
     let user: AuthenticatingUser = { username: username, password: password };
+    this.localStorageService.remove("userToken");
     this.usersService
       .authenticate(user)
       .pipe(
@@ -76,7 +80,7 @@ export class LoginComponent {
         },
         error: (err) => {
           console.log(err);
-          window.location.reload()
+          window.location.reload();
         }
       });
   }

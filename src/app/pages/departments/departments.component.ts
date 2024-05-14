@@ -15,9 +15,9 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
       <table>
         <thead>
           <tr>
-            <td>Id</td>
-            <td>Name</td>
-            <td>Short name</td>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Short name</th>
           </tr>
         </thead>
         <tbody>

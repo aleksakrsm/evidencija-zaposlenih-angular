@@ -9,11 +9,13 @@ import { LocalStorageService } from '../../service/localStorage.service';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <h2>Logout page</h2>
-    <p>Are you sure?</p>
-    <input type="button" value="Yes" (click)="logout()" />
-    <br />
-    <input type="button" value="No" (click)="back()" />
+    <div class="publicView">
+      <h2>Logout page</h2>
+      <p>Are you sure?</p>
+      <input type="button" value="Yes" (click)="logout()" />
+      <br />
+      <input type="button" value="No" (click)="back()" />
+    </div>
   `,
   styleUrl: './logout.component.scss',
 })
@@ -27,7 +29,7 @@ export class LogoutComponent {
     this.location.back();
   }
   logout() {
-    this.localStorageService.remove("userToken");
+    this.localStorageService.remove('userToken');
     this.router.navigate(['']);
   }
 }

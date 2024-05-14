@@ -15,18 +15,19 @@ import { RouterLink } from '@angular/router';
       <table>
         <thead>
           <tr>
-            <td>Id</td>
-            <td>Firstname</td>
-            <td>Lastname</td>
-            <td>Academic Title</td>
-            <td>Education Title</td>
-            <td>Department</td>
-            <td>Status</td>
-            <td>Birthday</td>
+            <th>Id</th>
+            <th>Firstname</th>
+            <th>Lastname</th>
+            <th>Academic Title</th>
+            <th>Education Title</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Birthday</th>
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let e of employees" routerLink="../employees/{{e.id}}">
+          <tr *ngFor="let e of employees" routerLink="{{routeToEmployees}}/employees/{{e.id}}">
+          <!-- <tr *ngFor="let e of employees" routerLink="../employees/{{e.id}}"> -->
             <td>{{ e.id }}</td>
             <td>{{ e.firstname }}</td>
             <td>{{ e.lastname }}</td>
@@ -63,6 +64,7 @@ import { RouterLink } from '@angular/router';
   styleUrl: './employee-page.component.scss',
 })
 export class EmployeePageComponent {
+  @Input() routeToEmployees: string = "";
   pageSizeChanged() {
     //na blur
     this.pageSize = Number.parseInt(this.pageSetting.getRawValue());

@@ -12,7 +12,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     <li><a routerLink="/home/subjects" routerLinkActive="active" >Subjects</a></li>
     <li><a routerLink="/home/departments" routerLinkActive="active" >Departments</a></li>
     <!-- <li><a routerLink="*" routerLinkActive="active" >Titles</a></li> -->
-    <li><a routerLink="*" routerLinkActive="active" >Reports</a></li>
+    <li><a routerLink="/home/reports" routerLinkActive="active" >Reports</a></li>
     <li><a routerLink="/logout" routerLinkActive="active" >Logout</a></li>
   </ul>
 `,
@@ -21,7 +21,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
       ul {
         margin: 0;
         padding: 1rem;
-        background-color: rebeccapurple;
+        background-color: blue;
         list-style-type: none;
         display: flex;
         flex-direction: row;

@@ -14,10 +14,10 @@ import { Subject } from '../../domain/subject.domain';
       <table>
         <thead>
           <tr>
-            <td>Id</td>
-            <td>Name</td>
-            <td>ECTS</td>
-            <td>Studies Type</td>
+            <th>Id</th>
+            <th>Name</th>
+            <th>ECTS</th>
+            <th>Studies Type</th>
           </tr>
         </thead>
         <tbody>

@@ -10,39 +10,48 @@ import {
   Subject,
   debounceTime,
   distinctUntilChanged,
+  filter,
+  map,
+  of,
   switchMap,
 } from 'rxjs';
+import { Status } from '../domain/status.enum';
 
 @Component({
   selector: 'app-add-academic-hi',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule,AsyncPipe],
+  imports: [CommonModule, ReactiveFormsModule, AsyncPipe],
   template: `
-    <h3>Add Employee</h3>
+    <div class="popup">
+      <h3>Add Employee</h3>
 
-    <label for="employeeSearch">Pretrazi employee</label>
-    <input
-      type="text"
-      name="employeeSearch"
-      id="employeeSearch"
-      [formControl]="searchTerm"
-      (keyup)="onKeyUp()"
-    />
-    <!-- <div *ngIf="searchResults"> -->
+      <label for="employeeSearch">Pretrazi employee</label>
+      <input
+        type="text"
+        name="employeeSearch"
+        id="employeeSearch"
+        [formControl]="searchTerm"
+        (keyup)="onKeyUp()"
+      />
+      <!-- <div *ngIf="searchResults"> -->
       <ul>
         <!-- na klik se zatvara i vraca kliknutog employeeaili njegov id -->
-        <li *ngFor="let employee of searchResults$ | async" (click)="add(employee)">
+        <li
+          *ngFor="let employee of searchResults$ | async"
+          (click)="add(employee)"
+        >
           {{ employee.firstname }} {{ employee.lastname }}
           {{ employee.department.shortName }}
         </li>
       </ul>
-    <!-- </div> -->
-    <!-- <div *ngIf="academicTitle?.errors?.['not selected']">
-    u must select
+      <!-- </div> -->
+      <!-- <div *ngIf="academicTitle?.errors?.['not selected']">
+        u must select
   </div> -->
 
-    <!-- <button [disabled]="!academicTitle.valid" (click)="add()">Add</button> -->
-    <button (click)="close()">Close</button>
+      <!-- <button [disabled]="!academicTitle.valid" (click)="add()">Add</button> -->
+      <button (click)="close()">Close</button>
+    </div>
   `,
   styles: [],
 })
@@ -64,9 +73,9 @@ export class AddEmployeePopup {
       debounceTime(500),
       distinctUntilChanged(),
       switchMap((term) =>
-        this.employeeService.searchEmployee(
-          term
-        )
+        this.employeeService
+          .searchEmployee(term)
+          .pipe(map((list) => list.filter((x) => x.status === Status.Active)))
       )
     );
   }
@@ -74,7 +83,11 @@ export class AddEmployeePopup {
   onKeyUp(): void {
     let searchTerm: string = this.searchTerm.getRawValue();
     searchTerm = searchTerm.trim();
-    if (searchTerm === '') return;
+    // if (searchTerm === ''){
+      // this.searchResults$;
+      // return;
+    // }
+    // if (searchTerm === '') return;
     this.search(searchTerm);
   }
   close(): void {

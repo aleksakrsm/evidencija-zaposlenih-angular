@@ -16,6 +16,7 @@ import { Status } from '../../domain/status.enum';
 import { Employee } from '../../domain/employee.domain';
 import { AsyncPipe, JsonPipe } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ReportsComponent } from '../reports/reports.component';
 
 @Component({
   selector: 'app-employees',
@@ -27,7 +28,8 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
     AsyncPipe,
     JsonPipe,
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    ReportsComponent
   ],
   template: `
     <!-- <p>employees works!</p> -->
@@ -45,6 +47,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
       [employees]="employees"
       (outputPageSize)="sizeChanged($event)"
       (outputCurrentPage)="pageChanged($event)"
+      [routeToEmployees]="'..'"
     ></app-employee-page>
     <br>
     <br>
