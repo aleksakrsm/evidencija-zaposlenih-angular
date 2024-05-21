@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
   imports: [ReactiveFormsModule,CommonModule],
   template:`
     <form [formGroup]="cmb">
-    <label for="cmb">Status: </label>
+    <label for="cmb">StudiesType: </label>
       <select formControlName="selectedOption" id="cmb">
         <option *ngFor="let option of types" [value]="option">
           {{ option }}
