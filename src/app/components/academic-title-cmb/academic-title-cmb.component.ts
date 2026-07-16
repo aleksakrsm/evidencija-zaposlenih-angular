@@ -10,7 +10,7 @@ import { of, switchMap } from 'rxjs';
   imports: [ReactiveFormsModule,CommonModule],
   template:`
   <form [formGroup]="cmb">
-  <label for="cmb">Izaberi akademsku titulu</label>
+  <label for="cmb">Academic Title</label>
   <select formControlName="selectedOption" id="cmb">
     <option *ngFor="let option of academicTitles" [value]="option.name">{{ option.name }}</option>
   </select>
